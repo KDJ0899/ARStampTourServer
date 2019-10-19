@@ -19,7 +19,6 @@ connection.connect();
 
 /* post attraction. */
 router.post('/attraction', function(req, res, next) {
-	console.log('attraction : ', req);
 	var where = req.body.where;
 	
 	if(where == null){
