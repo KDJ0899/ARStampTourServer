@@ -15,13 +15,12 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-//router.use(express.json());
-
 router.use('/', function(req, res, next) {
-//	var Array = JSON.parse(JSON.stringify(req.body));
+
 	var select=req.body.select;
 	var from = req.body.from;
 	var where = req.body.where;
+	
 	
 	if(select==null)
 		select = "*";
