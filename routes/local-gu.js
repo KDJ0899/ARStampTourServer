@@ -8,9 +8,9 @@ router.use(bodyParser.urlencoded({ extended : false }));
 
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : '127.0.0.1',
-  user     : 'root',
-  password : '016754',
+  host     : 'arstamptour.ctxzh32fpzmp.ap-northeast-2.rds.amazonaws.com',
+  user     : 'admin',
+  password : 'rla016754',
   port     : 3306,
   database : 'mydb'
 });
@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
     // 5. 객체화된 url 중에 Query String 부분만 따로 객체화 후 출력
 	var query = parsedUrl.query;
     var parsedQuery = querystring.parse(parsedUrl.query,'&','=');
-    console.log(query);
+    console.log(req.query);
 	if(query == null){
 		connection.query('SELECT * from local_gu', function(err, rows, fields) {
 		  if (!err){

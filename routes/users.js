@@ -6,9 +6,9 @@ router.use(bodyParser.urlencoded({ extended : false }));
 
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : '127.0.0.1',
-  user     : 'root',
-  password : '016754',
+  host     : 'arstamptour.ctxzh32fpzmp.ap-northeast-2.rds.amazonaws.com',
+  user     : 'admin',
+  password : 'rla016754',
   port     : 3306,
   database : 'mydb'
 });
@@ -46,6 +46,21 @@ router.use('/', function(req, res, next) {
 			    console.log('Error while performing Query.', err);
 			});
 	}
+});
+
+
+router.use('/all', function(req, res, next) {
+
+	var from = req.body.from;
+	
+
+	connection.query('SELECT * from '+from, function(err, rows, fields) {
+		  if (!err){
+			res.send(rows);
+		  }
+		  else
+		    console.log('Error while performing Query.', err);
+		});
 });
 
 

@@ -6,9 +6,9 @@ var url = require('url');
 
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : '127.0.0.1',
-  user     : 'root',
-  password : '2531',
+  host     : 'arstamptour.ctxzh32fpzmp.ap-northeast-2.rds.amazonaws.com',
+  user     : 'admin',
+  password : 'rla016754',
   port     : 3306,
   database : 'mydb',
   charset:'utf8'
@@ -22,7 +22,7 @@ router.post('/attraction', function(req, res, next) {
 	var where = req.body.where;
 	
 	if(where == null){
-		connection.query('SELECT * from attraction', function(err, rows, fields) {
+		connection.query('SELECT * from ATTRACTION', function(err, rows, fields) {
 			  if (!err){
 				res.send(rows);
 			  }
@@ -31,7 +31,7 @@ router.post('/attraction', function(req, res, next) {
 			});
 	}
 	else{
-		connection.query('SELECT attraction.Name,attraction.info,attraction.Address,attraction.Image,attraction.Latitude,attraction.Longitude,local_gu.Name as guName,local_si.name as siName from attraction left JOIN local_gu ON attraction.LOCAL_GU = local_gu.Gu_Id left JOIN local_si ON local_gu.Gu_Id = local_si.SI_Id where attraction.Att_Id= '+where+';', function(err, rows, fields) {
+		connection.query('SELECT ATTRACTION.Name,ATTRACTION.info,ATTRACTION.Address,ATTRACTION.Image,ATTRACTION.Latitude,ATTRACTION.Longitude,LOCAL_GU.Name as guName,LOCAL_SI.name as siName from ATTRACTION left JOIN LOCAL_GU ON ATTRACTION.LOCAL_GU = LOCAL_GU.Gu_Id left JOIN LOCAL_SI ON LOCAL_GU.Gu_Id = LOCAL_SI.SI_Id where ATTRACTION.Att_Id='+where+';', function(err, rows, fields) {
 			  if (!err){
 				res.send(rows);
 			  }
