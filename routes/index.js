@@ -18,7 +18,7 @@ connection.connect();
 
 
 /* post attraction. */
-router.post('/attraction', function(req, res, next) {
+router.use('/attraction', function(req, res, next) {
 	var where = req.body.where;
 	
 	if(where == null){
@@ -41,7 +41,8 @@ router.post('/attraction', function(req, res, next) {
 	}
 });
 
-router.post('/login', function(req, res, next) {
+		
+router.use('/login', function(req, res, next) {
 	var select=req.body.select;
 	var from = req.body.from;
 	var where = req.body.where;
@@ -74,5 +75,61 @@ router.post('/login', function(req, res, next) {
 	}
 });
 
+router.use('/register', function(req, res, next) {
+	var table=req.body.table;
+	var values = req.body.values;
+	
+	
+	if(table==null)
+		res.send("table is empty!!")
+	
+	if(values==null)
+		res.send("values is empty!!")
+	
+		console.log('insert into user(ID,Passowrd,Name,Birthday,Phone_No,Sex,LOCAL_SI,LOCAL_GU) values '+values, err);
+		connection.query('insert into user(ID,Passowrd,Name,Birthday,Phone_No,Sex,LOCAL_SI,LOCAL_GU) values '+values, function(err, rows, fields) {
+			  if (!err){
+				res.send('success!');
+			  }
+			  else
+			    console.log('Error while performing Query.', err);
+			});
+});
+
+//router.use('/checkId', function(req, res, next) {
+//	console.log('CheckID start', err);
+//	var where = req.body.where;
+//	var idWhere = req.body.idWhere;
+//	var siName = req.body.siName;
+//	var guName = req.bodt.guName;
+//	
+//	console.log('SELECT * from user where '+where+';', err);
+//	
+//	connection.query('SELECT * from user where '+where+';', function(err, rows, fields) {
+//		if (!err){
+//			res.send(rows);
+//		  }
+//		  else
+//		    console.log('Error while performing Query.', err);
+//		
+//		  if (err){
+//			  console.log('Error while performing Query.', err);
+//		  }
+//		  
+//		  if(rows[0].affectedRows <= 0){
+//			  connection.query('select local_si.SI_Id as siId,local_gu.Gu_Id as guId from local_si left JOIN local_gu ON local_si.SI_Id = local_gu.LOCAL_SI where '+idWhere+';', function(err, rows, fields){
+//				  if (!err){
+//						res.send(rows);
+//					  }
+//					  else
+//					    console.log('Error while performing Query.', err);
+//			  });
+//		  }
+//		  else{
+//			  res.send(rows); 
+//		  }
+//			  
+//		  });
+//});
 
 module.exports = router;
