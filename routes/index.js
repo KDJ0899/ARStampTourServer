@@ -6,9 +6,9 @@ var url = require('url');
 
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : '127.0.0.1',
-  user     : 'root',
-  password : '2531',
+  host     : 'arstamptour.ctxzh32fpzmp.ap-northeast-2.rds.amazonaws.com',
+  user     : 'admin',
+  password : 'rla016754',
   port     : 3306,
   database : 'mydb',
   charset:'utf8'
