@@ -31,7 +31,7 @@ router.use('/attraction', function(req, res, next) {
 			});
 	}
 	else{
-		connection.query('SELECT ATTRACTION.Name,ATTRACTION.info,ATTRACTION.Address,ATTRACTION.Image,ATTRACTION.Latitude,ATTRACTION.Longitude,LOCAL_GU.Name as guName,LOCAL_SI.name as siName from ATTRACTION left JOIN LOCAL_GU ON ATTRACTION.LOCAL_GU = LOCAL_GU.Gu_Id left JOIN LOCAL_SI ON LOCAL_GU.Gu_Id = LOCAL_SI.SI_Id where ATTRACTION.Att_Id='+where+';', function(err, rows, fields) {
+		connection.query('SELECT ATTRACTION.Name,ATTRACTION.info,ATTRACTION.Address,ATTRACTION.Image,ATTRACTION.Latitude,ATTRACTION.Longitude,LOCAL_GU.Name as guName,LOCAL_SI.name as siName from ATTRACTION left JOIN LOCAL_GU ON ATTRACTION.LOCAL_GU = LOCAL_GU.Gu_Id left JOIN LOCAL_SI ON LOCAL_GU.LOCAL_SI = LOCAL_SI.SI_Id where ATTRACTION.Att_Id = '+where+';', function(err, rows, fields) {
 			  if (!err){
 				res.send(rows);
 			  }

@@ -15,7 +15,38 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-router.use('/', function(req, res, next) {
+router.use('/homeLoading', function(req, res, next) {
+	connection.query('SELECT * from LOCAL_GU', function(err, rows, fields) {
+		  if (!err){
+			res.send(rows);
+		  }
+		  else
+		    console.log('Error while performing Query.', err);
+		});
+	
+	connection.query('SELECT * from ATTRACION', function(err, rows, fields) {
+		  if (!err){
+			res.send(rows);
+		  }
+		  else
+		    console.log('Error while performing Query.', err);
+		});
+});
+
+router.use('/insert', function(req, res, next) {
+	var into = req.body.into;
+	var values = req.body.values;
+	connection.query('INSERT into '+into+' values('+values+')', function(err, rows, fields) {
+		  if (!err){
+			res.send(rows);
+		  }
+		  else
+		    console.log('Error while performing Query.', err);
+		});
+	
+});
+
+router.use('', function(req, res, next) {
 
 	var select=req.body.select;
 	var from = req.body.from;
@@ -38,7 +69,7 @@ router.use('/', function(req, res, next) {
 			});
 	}
 	else{
-		connection.query('SELECT '+select+' from '+from +"where "+where, function(err, rows, fields) {
+		connection.query('SELECT '+select+' from '+from +' where '+where, function(err, rows, fields) {
 			  if (!err){
 				res.send(rows);
 			  }
@@ -46,21 +77,6 @@ router.use('/', function(req, res, next) {
 			    console.log('Error while performing Query.', err);
 			});
 	}
-});
-
-
-router.use('/all', function(req, res, next) {
-
-	var from = req.body.from;
-	
-
-	connection.query('SELECT * from '+from, function(err, rows, fields) {
-		  if (!err){
-			res.send(rows);
-		  }
-		  else
-		    console.log('Error while performing Query.', err);
-		});
 });
 
 
