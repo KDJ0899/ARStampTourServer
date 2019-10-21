@@ -22,7 +22,7 @@ router.use('/attraction', function(req, res, next) {
 	var where = req.body.where;
 	
 	if(where == null){
-		connection.query('SELECT * from attraction', function(err, rows, fields) {
+		connection.query('SELECT * from ATTRACTION', function(err, rows, fields) {
 			  if (!err){
 				res.send(rows);
 			  }

@@ -38,7 +38,7 @@ router.use('/insert', function(req, res, next) {
 	var values = req.body.values;
 	connection.query('INSERT into '+into+' values('+values+')', function(err, rows, fields) {
 		  if (!err){
-			res.send(rows);
+			res.send("success");
 		  }
 		  else
 		    console.log('Error while performing Query.', err);
