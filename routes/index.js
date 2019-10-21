@@ -6,9 +6,9 @@ var url = require('url');
 
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : 'arstamptour.ctxzh32fpzmp.ap-northeast-2.rds.amazonaws.com',
-  user     : 'admin',
-  password : 'rla016754',
+  host     : '127.0.0.1',
+  user     : 'root',
+  password : '2531',
   port     : 3306,
   database : 'mydb',
   charset:'utf8'
@@ -22,7 +22,7 @@ router.use('/attraction', function(req, res, next) {
 	var where = req.body.where;
 	
 	if(where == null){
-		connection.query('SELECT * from ATTRACTION', function(err, rows, fields) {
+		connection.query('SELECT * from attraction', function(err, rows, fields) {
 			  if (!err){
 				res.send(rows);
 			  }
@@ -76,60 +76,46 @@ router.use('/login', function(req, res, next) {
 });
 
 router.use('/register', function(req, res, next) {
-	var table=req.body.table;
-	var values = req.body.values;
+	var table = req.body.table;
+	var data = req.body.data;
+	var si = req.body.si;
+	var gu = req.body.gu;
+	var si_id;
+	var gu_id;
+	var id = req.body.id;
 	
-	
-	if(table==null)
-		res.send("table is empty!!")
-	
-	if(values==null)
-		res.send("values is empty!!")
-	
-		console.log('insert into user(ID,Passowrd,Name,Birthday,Phone_No,Sex,LOCAL_SI,LOCAL_GU) values '+values, err);
-		connection.query('insert into user(ID,Passowrd,Name,Birthday,Phone_No,Sex,LOCAL_SI,LOCAL_GU) values '+values, function(err, rows, fields) {
-			  if (!err){
-				res.send('success!');
-			  }
-			  else
-			    console.log('Error while performing Query.', err);
-			});
+	connection.query('select count(*) as cnt from user where ID="'+id+'";', function(err, rows, fields) {
+		console.log('sql = select * from user where ID="'+id+'";');
+		console.log('cnt = '+rows[0].cnt);
+		if(rows[0].cnt==0){
+			console.log('아이디 중복없음');
+			var sql1 = 'select SI_Id from local_si where name="'+si+'";';
+			var sql2 = 'select Gu_Id from local_gu where Name="'+gu+'";';
+			
+			connection.query(sql1, function(err, rows, fields) {
+					si_id = rows[0].SI_Id;
+				});
+			connection.query(sql2, function(err, rows, fields) {
+					gu_id = rows[0].Gu_Id;
+					
+					if(table==null){
+						res.send("table is empty!!")
+					}else{
+					
+						connection.query('insert into '+table+'(ID,Password,Name,Birthday,Phone_No,Sex,LOCAL_SI,LOCAL_GU) values'+data+'"'+si_id+'","'+gu_id+'");', function(err, rows, fields) {
+							  if (!err){
+								res.send('success!');
+							  }
+							  else
+								res.send('denial',err);
+							});
+					}
+				});
+		}else{
+			console.log('아이디 중복됨');
+			res.send('reRegister');
+		}
+		});
 });
-
-//router.use('/checkId', function(req, res, next) {
-//	console.log('CheckID start', err);
-//	var where = req.body.where;
-//	var idWhere = req.body.idWhere;
-//	var siName = req.body.siName;
-//	var guName = req.bodt.guName;
-//	
-//	console.log('SELECT * from user where '+where+';', err);
-//	
-//	connection.query('SELECT * from user where '+where+';', function(err, rows, fields) {
-//		if (!err){
-//			res.send(rows);
-//		  }
-//		  else
-//		    console.log('Error while performing Query.', err);
-//		
-//		  if (err){
-//			  console.log('Error while performing Query.', err);
-//		  }
-//		  
-//		  if(rows[0].affectedRows <= 0){
-//			  connection.query('select local_si.SI_Id as siId,local_gu.Gu_Id as guId from local_si left JOIN local_gu ON local_si.SI_Id = local_gu.LOCAL_SI where '+idWhere+';', function(err, rows, fields){
-//				  if (!err){
-//						res.send(rows);
-//					  }
-//					  else
-//					    console.log('Error while performing Query.', err);
-//			  });
-//		  }
-//		  else{
-//			  res.send(rows); 
-//		  }
-//			  
-//		  });
-//});
 
 module.exports = router;
