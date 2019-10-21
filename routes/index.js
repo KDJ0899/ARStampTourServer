@@ -64,8 +64,8 @@ router.use('/login', function(req, res, next) {
 			});
 	}
 	else{
-		console.log('SELECT '+select+' from '+from +" left JOIN stamp ON user.User_Id = stamp.USER where "+where);
-		connection.query('SELECT '+select+' from '+from +" left JOIN stamp ON user.User_Id = stamp.USER where "+where, function(err, rows, fields) {
+		console.log('SELECT '+select+' from '+from +" left JOIN STAMP ON USER.User_Id = STAMP.USER where "+where);
+		connection.query('SELECT '+select+' from '+from +" left JOIN STAMP ON USER.User_Id = STAMP.USER where "+where, function(err, rows, fields) {
 			  if (!err){
 				res.send(rows);
 			  }
@@ -84,13 +84,13 @@ router.use('/register', function(req, res, next) {
 	var gu_id;
 	var id = req.body.id;
 	
-	connection.query('select count(*) as cnt from user where ID="'+id+'";', function(err, rows, fields) {
+	connection.query('select count(*) as cnt from USER where ID="'+id+'";', function(err, rows, fields) {
 		console.log('sql = select * from user where ID="'+id+'";');
 		console.log('cnt = '+rows[0].cnt);
 		if(rows[0].cnt==0){
 			console.log('아이디 중복없음');
-			var sql1 = 'select SI_Id from local_si where name="'+si+'";';
-			var sql2 = 'select Gu_Id from local_gu where Name="'+gu+'";';
+			var sql1 = 'select SI_Id from LOCAL_SI where name="'+si+'";';
+			var sql2 = 'select Gu_Id from LOCAL_GU where Name="'+gu+'";';
 			
 			connection.query(sql1, function(err, rows, fields) {
 					si_id = rows[0].SI_Id;
